@@ -10,6 +10,12 @@
 
 @interface ViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UILabel *yourAnswer;
+@property (weak, nonatomic) IBOutlet UILabel *randomNumbers;
+@property (weak, nonatomic) IBOutlet UILabel *comparisonStatus;
+@property (weak, nonatomic) IBOutlet UILabel *playerOneLife;
+@property (weak, nonatomic) IBOutlet UILabel *playerTwoLife;
+@property (weak, nonatomic) IBOutlet UILabel *whoIsPlaying;
 
 @end
 
