@@ -14,6 +14,7 @@
 		482B857A1C4D7E0D00611EA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 482B85791C4D7E0D00611EA0 /* Assets.xcassets */; };
 		482B857D1C4D7E0D00611EA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 482B857B1C4D7E0D00611EA0 /* LaunchScreen.storyboard */; };
 		482B85861C4D83F600611EA0 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 482B85851C4D83F600611EA0 /* Player.m */; };
+		482B85891C4DB36700611EA0 /* GameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482B85881C4DB36700611EA0 /* GameModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		482B857E1C4D7E0D00611EA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		482B85841C4D83F600611EA0 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		482B85851C4D83F600611EA0 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
+		482B85871C4DB36700611EA0 /* GameModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameModel.h; sourceTree = "<group>"; };
+		482B85881C4DB36700611EA0 /* GameModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,8 @@
 				482B85741C4D7E0D00611EA0 /* ViewController.m */,
 				482B85841C4D83F600611EA0 /* Player.h */,
 				482B85851C4D83F600611EA0 /* Player.m */,
+				482B85871C4DB36700611EA0 /* GameModel.h */,
+				482B85881C4DB36700611EA0 /* GameModel.m */,
 				482B85761C4D7E0D00611EA0 /* Main.storyboard */,
 				482B85791C4D7E0D00611EA0 /* Assets.xcassets */,
 				482B857B1C4D7E0D00611EA0 /* LaunchScreen.storyboard */,
@@ -156,6 +161,7 @@
 			files = (
 				482B85861C4D83F600611EA0 /* Player.m in Sources */,
 				482B85751C4D7E0D00611EA0 /* ViewController.m in Sources */,
+				482B85891C4DB36700611EA0 /* GameModel.m in Sources */,
 				482B85721C4D7E0D00611EA0 /* AppDelegate.m in Sources */,
 				482B856F1C4D7E0D00611EA0 /* main.m in Sources */,
 			);
@@ -304,6 +310,7 @@
 				482B85831C4D7E0D00611EA0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

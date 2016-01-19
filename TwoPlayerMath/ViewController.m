@@ -8,11 +8,13 @@
 
 #import "ViewController.h"
 #import "Player.h"
+#import "GameModel.h"
 
 @interface ViewController ()
 
-@property (nonatomic, strong) Player *playerOne;
-@property (nonatomic, strong) Player *playerTwo;
+//@property (nonatomic, strong) Player *playerOne;
+//@property (nonatomic, strong) Player *playerTwo;
+@property (nonatomic, strong) GameModel *model;
 @property (nonatomic) NSUInteger counter;
 
 @end
@@ -30,12 +32,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.playerOne  = [[Player alloc] init];
-    self.playerOneLife.text = [NSString stringWithFormat:@"Player 1 Life: %lu", (unsigned long)self.playerOne.playerOneLife];
+    
+    self.model = [[GameModel alloc] init];
+    
+    //self.playerOne  = [[Player alloc] init];
+    self.playerOneLife.text = [NSString stringWithFormat:@"Player 1 Life: %lu", (unsigned long)self.model.playerOne.playerLife];
     
     
-    self.playerTwo  = [[Player alloc] init];
-    self.playerTwoLife.text = [NSString stringWithFormat:@"Player 2 Life: %lu", (unsigned long)self.playerTwo.playerTwoLife];
+    //self.playerTwo  = [[Player alloc] init];
+    self.playerTwoLife.text = [NSString stringWithFormat:@"Player 2 Life: %lu", (unsigned long)self.model.playerTwo.playerLife];
     
 }
 
@@ -48,54 +53,26 @@
 - (IBAction)pressedEnter:(UIButton *)sender {
     //Calculate random sum/ compare with players sum/ display result
     //self.yourAnswer.text = @"Good Job";
+    self.model.modelCounter++;
     
-    if ((self.counter == 0) || (self.counter == 2) || (self.counter == 4)) {
-    [self.playerOne randomNumbersAndTheirSum];
-    self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 1: X + Y?"];
-    self.randomNumbers.text = [NSString stringWithFormat:@"%lu + %lu = %lu", (unsigned long)self.playerOne.firstNumber, (unsigned long)self.playerOne.secondNumber, (unsigned long)self.playerOne.randomNumbersSum];
-    
-    if (self.playerOne.comparisonStatus == 0) {
-    self.comparisonStatus.text = @"Congratulations!! Numbers are equal";
-    } else if (self.playerOne.comparisonStatus == 1) {
-    self.comparisonStatus.text = @"Random Sum is greater";
-        self.comparisonStatus.textColor = [UIColor redColor];
-        self.playerOne.playerOneLife--;
-    } else if (self.playerOne.comparisonStatus == -1) {
-    self.comparisonStatus.text = @"Random Sum is Smaller";
-        self.comparisonStatus.textColor = [UIColor redColor];
-        self.playerOne.playerOneLife--;
-    }
-    
-    self.playerOneLife.text = [NSString stringWithFormat:@"Player 1 Life: %lu", (unsigned long)self.playerOne.playerOneLife];
-    self.playerTwoLife.text = [NSString stringWithFormat:@"Player 2 Life: %lu", (unsigned long)self.playerTwo.playerTwoLife];
+    if ((self.model.playerOne.playerLife > 0) && (self.model.playerTwo.playerLife > 0)) {
+    [self.model randomNumbersAndTheirSum];
+    self.whoIsPlaying.text = [NSString stringWithFormat:@"Question: X + Y?"];
         
-    [self.playerOne.enteredNumbers removeAllObjects];
+        
+    self.randomNumbers.text = [NSString stringWithFormat:@"%lu + %lu = %lu", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber, (unsigned long)self.model.randomNumbersSum];
+    
+    
+    self.comparisonStatus.text = self.model.modalComparisonStatusText;
+        
+    self.playerOneLife.text = [NSString stringWithFormat:@"Player 1 Life: %lu", (unsigned long)self.model.playerOne.playerLife];
+    self.playerTwoLife.text = [NSString stringWithFormat:@"Player 2 Life: %lu", (unsigned long)self.model.playerTwo.playerLife];
+        
+    [self.model.enteredNumbers removeAllObjects];
         self.counter++;
     }
-    else if ((self.counter == 1) || (self.counter == 3) || (self.counter == 5))  {
-        
-    [self.playerTwo randomNumbersAndTheirSum];
-    self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 2: X + Y?"];
-    self.randomNumbers.text = [NSString stringWithFormat:@"%lu + %lu = %lu", (unsigned long)self.playerTwo.firstNumber, (unsigned long)self.playerTwo.secondNumber, (unsigned long)self.playerTwo.randomNumbersSum];
-    
-    if (self.playerTwo.comparisonStatus == 0) {
-        self.comparisonStatus.text = @"Congratulations!! Numbers are equal";
-    } else if (self.playerTwo.comparisonStatus == 1) {
-        self.comparisonStatus.text = @"Random Sum is greater";
-        self.comparisonStatus.textColor = [UIColor redColor];
-        self.playerTwo.playerTwoLife--;
-    } else if (self.playerTwo.comparisonStatus == -1) {
-        self.comparisonStatus.text = @"Random Sum is Smaller";
-        self.comparisonStatus.textColor = [UIColor redColor];
-        self.playerTwo.playerTwoLife--;
-    }
-    
-    self.playerOneLife.text = [NSString stringWithFormat:@"Player 1 Life: %lu", (unsigned long)self.playerOne.playerOneLife];
-    self.playerTwoLife.text = [NSString stringWithFormat:@"Player 2 Life: %lu", (unsigned long)self.playerTwo.playerTwoLife];
-    
-    [self.playerOne.enteredNumbers removeAllObjects];
-        self.counter++;
-    } else {
+     else
+     {
         // call reset method and print
         self.comparisonStatus.text = @"";
         self.whoIsPlaying.text = @"Two Players";
@@ -107,54 +84,54 @@
 
 
 - (IBAction)pressedOne:(UIButton *)sender {
-    [self.playerOne.enteredNumbers addObject:@"1"];
-    [self.playerOne displayNumbersArray];
-    self.yourAnswer.text = self.playerOne.arrayToString;
+    [self.model.enteredNumbers addObject:@"1"];
+    [self.model displayNumbersArray];
+    self.yourAnswer.text = self.model.arrayToString;
 }
 - (IBAction)pressedTwo:(UIButton *)sender {
-    [self.playerOne.enteredNumbers addObject:@"2"];
-    [self.playerOne displayNumbersArray];
-    self.yourAnswer.text = self.playerOne.arrayToString;
+    [self.model.enteredNumbers addObject:@"2"];
+    [self.model displayNumbersArray];
+    self.yourAnswer.text = self.model.arrayToString;
 }
 - (IBAction)pressedThree:(UIButton *)sender {
-    [self.playerOne.enteredNumbers addObject:@"3"];
-    [self.playerOne displayNumbersArray];
-    self.yourAnswer.text = self.playerOne.arrayToString;
+    [self.model.enteredNumbers addObject:@"3"];
+    [self.model displayNumbersArray];
+    self.yourAnswer.text = self.model.arrayToString;
 }
 - (IBAction)pressedFour:(UIButton *)sender {
-    [self.playerOne.enteredNumbers addObject:@"4"];
-    [self.playerOne displayNumbersArray];
-    self.yourAnswer.text = self.playerOne.arrayToString;
+    [self.model.enteredNumbers addObject:@"4"];
+    [self.model displayNumbersArray];
+    self.yourAnswer.text = self.model.arrayToString;
 }
 - (IBAction)pressedFive:(UIButton *)sender {
-    [self.playerOne.enteredNumbers addObject:@"5"];
-    [self.playerOne displayNumbersArray];
-    self.yourAnswer.text = self.playerOne.arrayToString;
+    [self.model.enteredNumbers addObject:@"5"];
+    [self.model displayNumbersArray];
+    self.yourAnswer.text = self.model.arrayToString;
 }
 - (IBAction)pressedSix:(UIButton *)sender {
-    [self.playerOne.enteredNumbers addObject:@"6"];
-    [self.playerOne displayNumbersArray];
-    self.yourAnswer.text = self.playerOne.arrayToString;
+    [self.model.enteredNumbers addObject:@"6"];
+    [self.model displayNumbersArray];
+    self.yourAnswer.text = self.model.arrayToString;
 }
 - (IBAction)pressedSeven:(UIButton *)sender {
-    [self.playerOne.enteredNumbers addObject:@"7"];
-    [self.playerOne displayNumbersArray];
-    self.yourAnswer.text = self.playerOne.arrayToString;
+    [self.model.enteredNumbers addObject:@"7"];
+    [self.model displayNumbersArray];
+    self.yourAnswer.text = self.model.arrayToString;
 }
 - (IBAction)pressedEight:(UIButton *)sender {
-    [self.playerOne.enteredNumbers addObject:@"8"];
-    [self.playerOne displayNumbersArray];
-    self.yourAnswer.text = self.playerOne.arrayToString;
+    [self.model.enteredNumbers addObject:@"8"];
+    [self.model displayNumbersArray];
+    self.yourAnswer.text = self.model.arrayToString;
 }
 - (IBAction)pressedNine:(UIButton *)sender {
-    [self.playerOne.enteredNumbers addObject:@"9"];
-    [self.playerOne displayNumbersArray];
-    self.yourAnswer.text = self.playerOne.arrayToString;
+    [self.model.enteredNumbers addObject:@"9"];
+    [self.model displayNumbersArray];
+    self.yourAnswer.text = self.model.arrayToString;
 }
 - (IBAction)pressedZero:(UIButton *)sender {
-    [self.playerOne.enteredNumbers addObject:@"0"];
-    [self.playerOne displayNumbersArray];
-    self.yourAnswer.text = self.playerOne.arrayToString;
+    [self.model.enteredNumbers addObject:@"0"];
+    [self.model displayNumbersArray];
+    self.yourAnswer.text = self.model.arrayToString;
 }
 
 
