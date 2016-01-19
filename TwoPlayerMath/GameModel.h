@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Player.h"
 
 
 @interface GameModel : NSObject
@@ -20,17 +21,26 @@
 
 @property (nonatomic) NSUInteger firstNumber;
 @property (nonatomic) NSUInteger secondNumber;
-@property (nonatomic) NSUInteger randomNumbersSum;
-@property (nonatomic) NSUInteger playerAnswer;
 
+@property (nonatomic) NSUInteger randomNumbersSum;
+@property (nonatomic) NSUInteger randomNumbersProduct;
+@property (nonatomic) NSUInteger randomNumbersDifference;
+
+@property (nonatomic) NSUInteger randomOperationSelection;
+@property (nonatomic) NSUInteger playerAnswer;
 
 @property (nonatomic, strong) Player *playerOne;
 @property (nonatomic, strong) Player *playerTwo;
 
 -(void)displayNumbersArray;
--(void)randomNumbersAndTheirSum;
 
--(void)randomOperationSelection;
+-(void)generateRandomNumbers;
+
+-(void)randomNumbersSumComparison;
+
+-(void)randomNumbersDifferenceComparison;
+
+-(void)randomNumbersProductComparison;
 
 
 @end

@@ -12,8 +12,6 @@
 
 @interface ViewController ()
 
-//@property (nonatomic, strong) Player *playerOne;
-//@property (nonatomic, strong) Player *playerTwo;
 @property (nonatomic, strong) GameModel *model;
 @property (nonatomic) NSUInteger counter;
 
@@ -35,12 +33,17 @@
     
     self.model = [[GameModel alloc] init];
     
-    //self.playerOne  = [[Player alloc] init];
     self.playerOneLife.text = [NSString stringWithFormat:@"Player 1 Life: %lu", (unsigned long)self.model.playerOne.playerLife];
-    
-    
-    //self.playerTwo  = [[Player alloc] init];
     self.playerTwoLife.text = [NSString stringWithFormat:@"Player 2 Life: %lu", (unsigned long)self.model.playerTwo.playerLife];
+    
+    [self.model generateRandomNumbers];
+    
+    if (self.model.randomOperationSelection == 0) {
+    self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 1: %lu + %lu?", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber]; }
+    else if (self.model.randomOperationSelection == 1) {
+    self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 1: %lu - %lu?", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber]; }
+    else if (self.model.randomOperationSelection == 2) {
+    self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 1: %lu * %lu?", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber]; }
     
 }
 
@@ -52,32 +55,68 @@
 
 - (IBAction)pressedEnter:(UIButton *)sender {
     //Calculate random sum/ compare with players sum/ display result
-    //self.yourAnswer.text = @"Good Job";
-    self.model.modelCounter++;
     
     if ((self.model.playerOne.playerLife > 0) && (self.model.playerTwo.playerLife > 0)) {
-    [self.model randomNumbersAndTheirSum];
-    self.whoIsPlaying.text = [NSString stringWithFormat:@"Question: X + Y?"];
-        
-        
-    self.randomNumbers.text = [NSString stringWithFormat:@"%lu + %lu = %lu", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber, (unsigned long)self.model.randomNumbersSum];
     
+        if (self.model.randomOperationSelection == 0) {
+            [self.model randomNumbersSumComparison];
+            self.randomNumbers.text = [NSString stringWithFormat:@"%lu + %lu = %lu", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber, (unsigned long)self.model.randomNumbersSum];}
+        else if (self.model.randomOperationSelection == 1) {
+            [self.model randomNumbersDifferenceComparison];
+            self.randomNumbers.text = [NSString stringWithFormat:@"%lu - %lu = %lu", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber, (unsigned long)self.model.randomNumbersSum];}
+        else if (self.model.randomOperationSelection == 2) {
+            [self.model randomNumbersProductComparison];
+            self.randomNumbers.text = [NSString stringWithFormat:@"%lu * %lu = %lu", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber, (unsigned long)self.model.randomNumbersSum];}
     
-    self.comparisonStatus.text = self.model.modalComparisonStatusText;
+        self.comparisonStatus.text = self.model.modalComparisonStatusText;
+        if (self.model.comparisonStatus == 0) {
+            self.comparisonStatus.textColor = [UIColor greenColor];
+            self.comparisonStatus.backgroundColor = [UIColor redColor];
+        } else {
+            self.comparisonStatus.textColor = [UIColor redColor];
+            self.comparisonStatus.backgroundColor = [UIColor yellowColor];
+        }
+    
         
     self.playerOneLife.text = [NSString stringWithFormat:@"Player 1 Life: %lu", (unsigned long)self.model.playerOne.playerLife];
     self.playerTwoLife.text = [NSString stringWithFormat:@"Player 2 Life: %lu", (unsigned long)self.model.playerTwo.playerLife];
         
     [self.model.enteredNumbers removeAllObjects];
-        self.counter++;
+        self.model.modelCounter++;
+    
+    [self.model generateRandomNumbers];
+        
+        if ((self.counter % 2) != 0) {
+            if (self.model.randomOperationSelection == 0) {
+            self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 1: %lu + %lu?", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber]; }
+            else if (self.model.randomOperationSelection == 1) {
+            self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 1: %lu - %lu?", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber]; }
+            else if (self.model.randomOperationSelection == 2) {
+            self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 1: %lu * %lu?", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber]; }
+        }
+        else {
+            if (self.model.randomOperationSelection == 0) {
+            self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 2: %lu + %lu?", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber]; }
+            else if (self.model.randomOperationSelection == 1) {
+            self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 2: %lu - %lu?", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber]; }
+            else if (self.model.randomOperationSelection == 2) {
+            self.whoIsPlaying.text = [NSString stringWithFormat:@"Player 2: %lu * %lu?", (unsigned long)self.model.firstNumber, (unsigned long)self.model.secondNumber]; }
+        }
+            self.counter++;
     }
-     else
-     {
-        // call reset method and print
+    else if ((self.model.playerOne.playerLife > 0) && (self.model.playerTwo.playerLife == 0)) {
         self.comparisonStatus.text = @"";
-        self.whoIsPlaying.text = @"Two Players";
+        self.comparisonStatus.backgroundColor = [UIColor whiteColor];
+        self.whoIsPlaying.text = @"Player One Wins";
         self.randomNumbers.text = @"Thanks for playing";
-        self.yourAnswer.text = @"You guys win nothing";
+        self.yourAnswer.text = @"Come Back Again!!!";
+        
+    } else if ((self.model.playerOne.playerLife == 0) && (self.model.playerTwo.playerLife > 0)) {
+        self.comparisonStatus.text = @"";
+        self.comparisonStatus.backgroundColor = [UIColor whiteColor];
+        self.whoIsPlaying.text = @"Player Two Wins";
+        self.randomNumbers.text = @"Thanks for playing";
+        self.yourAnswer.text = @"Come Back Again!!!";
     }
     
 }
